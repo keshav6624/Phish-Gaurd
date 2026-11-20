@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Phish-Guard – AI-Powered Security Auditor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanline"></div>
+
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <polygon points="19,2 36,10 36,28 19,36 2,28 2,10" stroke="#00ffe7" stroke-width="1.5" fill="none"/>
+          <polygon points="19,8 30,13 30,25 19,30 8,25 8,13" stroke="#00ffe7" stroke-width="0.8" fill="rgba(0,255,231,0.04)"/>
+          <circle cx="19" cy="19" r="5" fill="#00ffe7" opacity="0.9"/>
+          <line x1="19" y1="2" x2="19" y2="8" stroke="#00ffe7" stroke-width="1"/>
+          <line x1="19" y1="30" x2="19" y2="36" stroke="#00ffe7" stroke-width="1"/>
+          <line x1="2" y1="10" x2="8" y2="13" stroke="#00ffe7" stroke-width="1"/>
+          <line x1="30" y1="25" x2="36" y2="28" stroke="#00ffe7" stroke-width="1"/>
+          <line x1="2" y1="28" x2="8" y2="25" stroke="#00ffe7" stroke-width="1"/>
+          <line x1="30" y1="13" x2="36" y2="10" stroke="#00ffe7" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">PHISH<span class="accent">-</span>GUARD</span>
+        <span class="logo-sub">AI FORENSIC SECURITY AUDITOR v2.0</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <span class="status-dot"></span>
+      <span class="status-text">SYSTEMS ONLINE</span>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- INPUT PANEL -->
+    <section class="input-panel">
+      <div class="panel-header">
+        <span class="panel-tag">// INPUT VECTOR</span>
+        <div class="tab-group">
+          <button class="tab active" data-tab="url" onclick="switchTab('url')">URL SCAN</button>
+          <button class="tab" data-tab="email" onclick="switchTab('email')">EMAIL SCAN</button>
+        </div>
+      </div>
+
+      <!-- URL Tab -->
+      <div class="tab-content active" id="tab-url">
+        <div class="input-group">
+          <label class="input-label">TARGET URL</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">⬡</span>
+            <input type="text" id="url-input" class="input-field"
+              placeholder="https://suspicious-domain.com/verify"
+              autocomplete="off" spellcheck="false"/>
+            <button class="clear-btn" onclick="clearInput('url-input')">✕</button>
+          </div>
+          <div class="input-hint">Paste any URL — shortened links, redirect chains, or suspicious domains.</div>
+        </div>
+        <div class="checks-preview">
+          <div class="check-item"><span class="check-icon">◈</span> DNS Lookup &amp; Resolution</div>
+          <div class="check-item"><span class="check-icon">◈</span> SSL Certificate Validation</div>
+          <div class="check-item"><span class="check-icon">◈</span> HTTP Header Inspection</div>
+          <div class="check-item"><span class="check-icon">◈</span> Redirect Chain Analysis</div>
+          <div class="check-item"><span class="check-icon">◈</span> Domain Pattern Detection</div>
+          <div class="check-item"><span class="check-icon">◈</span> AI Forensic Analysis</div>
+        </div>
+      </div>
+
+      <!-- Email Tab -->
+      <div class="tab-content" id="tab-email">
+        <div class="input-group">
+          <label class="input-label">EMAIL CONTENT</label>
+          <div class="textarea-wrapper">
+            <textarea id="email-input" class="input-textarea"
+              placeholder="Paste full email body here including headers, links, and message text...&#10;&#10;Example:&#10;From: security@paypa1.com&#10;Subject: Urgent: Verify your account NOW&#10;&#10;Dear Customer, your account has been suspended.&#10;Click here to verify now: http://paypal-verify.xyz/login&#10;Update payment details immediately to avoid closure."></textarea>
+          </div>
+          <div class="input-hint">Paste raw email content. Embedded URLs will be extracted and analyzed.</div>
+        </div>
+        <div class="checks-preview">
+          <div class="check-item"><span class="check-icon">◈</span> Suspicious Keyword Detection</div>
+          <div class="check-item"><span class="check-icon">◈</span> URL Extraction &amp; Scanning</div>
+          <div class="check-item"><span class="check-icon">◈</span> Sender Spoofing Detection</div>
+          <div class="check-item"><span class="check-icon">◈</span> Urgency Tactic Analysis</div>
+          <div class="check-item"><span class="check-icon">◈</span> AI Forensic Analysis</div>
+        </div>
+      </div>
+
+      <button class="scan-btn" id="scan-btn" onclick="startScan()">
+        <span class="scan-btn-icon">⬡</span>
+        <span class="scan-btn-text">INITIATE SECURITY SCAN</span>
+        <span class="scan-btn-arrow">→</span>
+      </button>
+
+      <div class="disclaimer">
+        <span class="disc-icon">⚠</span>
+        Analysis performed server-side. AI keys never exposed to client.
+      </div>
+    </section>
+
+    <!-- RESULTS PANEL -->
+    <section class="results-panel" id="results-panel">
+
+      <!-- Empty state -->
+      <div class="results-empty" id="results-empty">
+        <div class="empty-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" stroke="rgba(0,255,231,0.15)" stroke-width="1"/>
+            <circle cx="40" cy="40" r="28" stroke="rgba(0,255,231,0.10)" stroke-width="1"/>
+            <circle cx="40" cy="40" r="18" stroke="rgba(0,255,231,0.07)" stroke-width="1"/>
+            <circle cx="40" cy="40" r="4" fill="rgba(0,255,231,0.3)"/>
+            <line x1="40" y1="2" x2="40" y2="12" stroke="rgba(0,255,231,0.4)" stroke-width="1.5"/>
+            <line x1="40" y1="68" x2="40" y2="78" stroke="rgba(0,255,231,0.4)" stroke-width="1.5"/>
+            <line x1="2" y1="40" x2="12" y2="40" stroke="rgba(0,255,231,0.4)" stroke-width="1.5"/>
+            <line x1="68" y1="40" x2="78" y2="40" stroke="rgba(0,255,231,0.4)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="empty-title">AWAITING TARGET</div>
+        <div class="empty-sub">Submit a URL or email content to begin forensic analysis</div>
+        <div class="empty-data">
+          <div class="data-row"><span>SCAN ENGINE</span><span class="data-val accent-text">ACTIVE</span></div>
+          <div class="data-row"><span>AI MODEL</span><span class="data-val accent-text">GEMINI PRO</span></div>
+          <div class="data-row"><span>STATUS</span><span class="data-val accent-text">READY</span></div>
+        </div>
+      </div>
+
+      <!-- Scanning state -->
+      <div class="results-scanning hidden" id="results-scanning">
+        <div class="scan-header">
+          <span class="scan-label">SCANNING TARGET</span>
+          <span class="scan-id" id="scan-id">SID-000000</span>
+        </div>
+        <div class="scan-target-display" id="scan-target-display">—</div>
+        <div class="progress-container">
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-glow"></div>
+          </div>
+          <div class="progress-percent" id="progress-percent">0%</div>
+        </div>
+        <div class="scan-steps" id="scan-steps">
+          <div class="step" id="step-dns"><span class="step-dot">○</span><span>DNS Resolution</span><span class="step-status">PENDING</span></div>
+          <div class="step" id="step-ssl"><span class="step-dot">○</span><span>SSL Certificate</span><span class="step-status">PENDING</span></div>
+          <div class="step" id="step-headers"><span class="step-dot">○</span><span>HTTP Headers</span><span class="step-status">PENDING</span></div>
+          <div class="step" id="step-keywords"><span class="step-dot">○</span><span>Pattern Analysis</span><span class="step-status">PENDING</span></div>
+          <div class="step" id="step-ai"><span class="step-dot">○</span><span>AI Forensics</span><span class="step-status">PENDING</span></div>
+        </div>
+      </div>
+
+      <!-- Results state -->
+      <div class="results-data hidden" id="results-data">
+
+        <!-- Threat Meter -->
+        <div class="threat-meter-section">
+          <div class="threat-meter">
+            <svg class="meter-svg" viewBox="0 0 200 120" width="200" height="120">
+              <path d="M 20 100 A 80 80 0 0 1 180 100" stroke="rgba(255,255,255,0.08)" stroke-width="12" fill="none" stroke-linecap="round"/>
+              <path id="meter-arc" d="M 20 100 A 80 80 0 0 1 180 100"
+                stroke="#00ffe7" stroke-width="12" fill="none"
+                stroke-linecap="round"
+                stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
+              <g id="meter-needle" transform="rotate(-90, 100, 100)">
+                <line x1="100" y1="100" x2="100" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="100" cy="100" r="5" fill="white"/>
+              </g>
+              <text x="14" y="118" fill="rgba(255,255,255,0.4)" font-size="9" font-family="Share Tech Mono">0</text>
+              <text x="92" y="22" fill="rgba(255,255,255,0.4)" font-size="9" font-family="Share Tech Mono">50</text>
+              <text x="179" y="118" fill="rgba(255,255,255,0.4)" font-size="9" font-family="Share Tech Mono">100</text>
+            </svg>
+            <div class="threat-score-display">
+              <span class="threat-score-number" id="threat-score-number">0</span>
+              <span class="threat-score-label">/100</span>
+            </div>
+          </div>
+          <div class="threat-verdict">
+            <span class="verdict-badge" id="verdict-badge">—</span>
+            <span class="verdict-detail" id="verdict-detail">—</span>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card" id="stat-card-dns">
+            <span class="stat-label">DNS STATUS</span>
+            <span class="stat-value" id="stat-dns-val">—</span>
+          </div>
+          <div class="stat-card" id="stat-card-ssl">
+            <span class="stat-label">SSL VALID</span>
+            <span class="stat-value" id="stat-ssl-val">—</span>
+          </div>
+          <div class="stat-card" id="stat-card-issuer">
+            <span class="stat-label">CERT ISSUER</span>
+            <span class="stat-value stat-small" id="stat-issuer-val">—</span>
+          </div>
+          <div class="stat-card" id="stat-card-redirects">
+            <span class="stat-label">REDIRECTS</span>
+            <span class="stat-value" id="stat-redirects-val">0</span>
+          </div>
+        </div>
+
+        <!-- Suspicious Keywords -->
+        <div class="keywords-section" id="keywords-section" style="display:none">
+          <div class="section-header">
+            <span class="section-tag">⚠ SUSPICIOUS PATTERNS DETECTED</span>
+          </div>
+          <div class="keywords-container" id="keywords-container"></div>
+        </div>
+
+        <!-- Email highlighted body -->
+        <div class="email-body-section" id="email-body-section" style="display:none">
+          <div class="section-header collapsible" onclick="toggleSection('email-body-content')">
+            <span class="section-tag">✉ EMAIL ANALYSIS</span>
+            <span class="collapse-icon" id="email-body-collapse">▼</span>
+          </div>
+          <div id="email-body-content" class="collapsible-body">
+            <div class="highlighted-email" id="highlighted-email"></div>
+          </div>
+        </div>
+
+        <!-- AI Analysis -->
+        <div class="ai-section">
+          <div class="section-header collapsible" onclick="toggleSection('ai-body')">
+            <span class="section-tag">⬡ AI FORENSIC ANALYSIS</span>
+            <span class="collapse-icon" id="ai-collapse">▼</span>
+          </div>
+          <div id="ai-body" class="collapsible-body">
+            <div class="ai-content" id="ai-content">—</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="result-actions">
+          <button class="action-btn primary" onclick="copyReport()">
+            <span>⧉</span> COPY REPORT
+          </button>
+          <button class="action-btn" onclick="resetScan()">
+            <span>↺</span> NEW SCAN
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>PHISH-GUARD v2.0 // AI-POWERED FORENSIC SECURITY AUDITOR</span>
+    <span>GEMINI PRO + NODE.JS + EXPRESS</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
